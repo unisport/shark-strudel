@@ -25,21 +25,21 @@
             {% for hours in lb.opening_hours %}
                 <div class="form-group">
                     <label for="oh_opening">Opening Hours</label>
-                    <input type="text" name="oh_opening" value="{{ hours.opening_hours }}" class="form-control">
+                    <input type="text" name="oh_opening" value="{{ hours.opening_hours }}" class="form-control pull-left" style="width: 80%">
                     <input type="hidden" name="oh_display_order" value="{{ hours.display_order }}">
                     <input type="hidden" name="oh_pk" value="{{ hours.pk }}">
-                    <button type="button" class="btn btn-danger" data-action="remove-item">Remove</button>
+                    <button type="button" class="btn btn-danger pull-right" data-action="remove-item">Remove</button>
                 </div>
             {% endfor %}
                 <div class="form-group">
                     <label for="oh_opening">Opening Hours</label>
-                    <input type="text" name="oh_opening" value="" class="form-control">
+                    <input type="text" name="oh_opening" value="" class="form-control pull-left" style="width: 80%">
                     <input type="hidden" name="oh_display_order" value="">
                     <input type="hidden" name="oh_pk" value="">
-                    <button type="button" class="btn btn-danger" data-action="remove-item">Remove</button>
+                    <button type="button" class="btn btn-danger pull-right" data-action="remove-item">Remove</button>
                 </div>
             </div>
-            <div class="">
+            <div>
                 <button data-action="add-item" class="btn btn-primary" type="button">Add More</button>
                 <button data-action="save-items" class="btn btn-success" type="button">Save All</button>
             </div>

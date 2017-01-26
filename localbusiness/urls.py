@@ -3,7 +3,6 @@ from django.conf.urls import url
 from . import views
 
 
-app_name = 'localbusiness'
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^new/$', views.create_view, name='create_view'),
