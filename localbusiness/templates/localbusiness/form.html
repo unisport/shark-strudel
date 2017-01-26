@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <form action="#" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field|add_class:'form-control' }}
+            </div>
+            {% endfor %}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" data-action="save-form">Save</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <form action="/localbusiness/{{ lb.pk }}/opening_hours/new/" method="post" id="opening_hours_form">
+            <input type="hidden" name="local_business_pk" value="{{ lb.pk }}">
+            {% csrf_token %}
+            <div id="opening_hours">
+            {% for hours in lb.opening_hours %}
+                <div class="form-group">
+                    <label for="oh_opening">Opening Hours</label>
+                    <input type="text" name="oh_opening" value="{{ hours.opening_hours }}" class="form-control">
+                    <input type="hidden" name="oh_display_order" value="{{ hours.display_order }}">
+                    <input type="hidden" name="oh_pk" value="{{ hours.pk }}">
+                    <button type="button" class="btn btn-danger" data-action="remove-item">Remove</button>
+                </div>
+            {% endfor %}
+                <div class="form-group">
+                    <label for="oh_opening">Opening Hours</label>
+                    <input type="text" name="oh_opening" value="" class="form-control">
+                    <input type="hidden" name="oh_display_order" value="">
+                    <input type="hidden" name="oh_pk" value="">
+                    <button type="button" class="btn btn-danger" data-action="remove-item">Remove</button>
+                </div>
+            </div>
+            <div class="">
+                <button data-action="add-item" class="btn btn-primary" type="button">Add More</button>
+                <button data-action="save-items" class="btn btn-success" type="button">Save All</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock%}
+
+{% block js %}
+<script>
+(function (document, $) {
+    var addItem = $('[data-action="add-item"]'),
+        item = $('.form-group:last', '#opening_hours').html(),
+        group = $('#opening_hours'),
+        localBusinessId = $("[name='local_business_pk']", "#opening_hours_form").val() || null;
+
+    addItem.on("click", function(e) {
+        e.preventDefault();
+        $('<div class="form-group"></div>').html(item).appendTo(group);
+    });
+
+    group.on("click", "[data-action='remove-item']", function(e) {
+        e.preventDefault();
+        var parent = $(this).closest(".form-group"),
+            ohId = $("[name='oh_pk']", parent).val() || null;
+        if ( $(".form-group", group).length > 1 && ohId ) {
+            $.post({
+                url: '/localbusiness/'+ localBusinessId +'/opening_hours/remove/',
+                data: JSON.stringify({'opening_hours_pk': ohId}),
+                success: function(resp) {
+                    console.log(resp);
+                }
+            });
+        }
+        $(this).closest(".form-group").remove();
+    });
+
+    $('[data-action="save-form"]').on('click', function(e) {
+        // e.preventDefault();
+    });
+
+    $('[data-action="save-items"]').on('click', function(e) {
+        e.preventDefault();
+        var foo = $('#opening_hours_form');
+
+        if ( localBusinessId ) {
+            $(".form-group", foo).each(function(i, item) {
+                var data = {};
+                $("input", item).each(function(j, inpt) {
+                    inpt = $(inpt);
+                    data[inpt.attr("name")] = inpt.val() || "";
+                });
+                if ( data.oh_pk === "" ) {
+                    delete data.oh_pk;
+                }
+                if ( data.oh_display_order === "" ) {
+                    data.oh_display_order = i;
+                }
+                Object.assign(data, {
+                    "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']", foo).val()
+                    }
+                );
+                if ( data.oh_opening !== "") {
+                    $.post({
+                        url: '/localbusiness/'+ localBusinessId +'/opening_hours/new/',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        success: function(resp) { 
+                            $("[name='oh_pk']", item).val(resp.opening_hours_pk);
+                            $("[name='oh_display_order']").val(resp.display_order);
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    if ( localBusinessId == null ) {
+        $("button", "#opening_hours_form").each(function(i, butt) {
+            $(butt).attr("disabled", true);
+        });
+    }
+})(document, jQuery);
+</script>
+{% endblock %}

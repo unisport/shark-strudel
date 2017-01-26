@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="list-group">
+        {% for lb in localbusiness_list %}
+            <button type="button" class="list-group-item" data-item-id="{{ lb.pk }}">{{ lb.site_name }}</button>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <a href="/localbusiness/new/" class="btn btn-primary">Add New</a>
+    </div>
+</div>
+{% endblock%}
+
+{% block js %}
+<script>
+(function(document, $) {
+    $('[data-item-id]').on('click', function(e) {
+        document.location = '/localbusiness/'+ $(this).attr('data-item-id') +'/edit/';
+    });
+})(document, jQuery, window);
+</script>
+{% endblock %}
