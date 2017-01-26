@@ -20,14 +20,14 @@ SITE_IDS = (
 
 class LocalBusiness(models.Model):
     site_id = models.IntegerField(choices=SITE_IDS)
-    name = models.CharField(max_length=100, null=False, default='Unisport A/S')
-    streetAddress = models.CharField(max_length=255, null=True)
-    addressLocality = models.CharField(max_length=100, null=True)
-    addressRegion = models.CharField(max_length=100, null=True)
-    postalCode = models.CharField(max_length=100, null=True)
-    addressCountry = models.CharField(max_length=100, null=True)
-    telephone = models.CharField(max_length=100, null=True)
-    additional_text = models.CharField(max_length=255, null=True)
+    name = models.CharField(max_length=100, default=u'Unisport A/S')
+    streetAddress = models.CharField(max_length=255, default='')
+    addressLocality = models.CharField(max_length=100, default='')
+    addressRegion = models.CharField(max_length=100, default='')
+    postalCode = models.CharField(max_length=100, default='')
+    addressCountry = models.CharField(max_length=100, default='')
+    telephone = models.CharField(max_length=100, default='')
+    additional_text = models.CharField(max_length=255, default='')
 
     @property
     def site_name(self):
