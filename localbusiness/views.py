@@ -63,18 +63,24 @@ def add_opening_hours(request, lb_pk):
                 opening_hours.opening_hours = json_data['oh_opening']
                 opening_hours.save()
 
-                return JsonResponse({'opening_hours_pk': opening_hours.pk,
-                    'oh_display_order': opening_hours.display_order,
-                    'oh_opening': opening_hours.opening_hours})
+                return JsonResponse({
+                            'opening_hours_pk': opening_hours.pk,
+                            'oh_display_order': opening_hours.display_order,
+                            'oh_opening': opening_hours.opening_hours
+                })
             except KeyError:
                 """ Creating """
-                opening_hours = OpeningHours(opening_hours=json_data['oh_opening'],
-                        display_order=json_data['oh_display_order'], localbusiness=lb)
+                opening_hours = OpeningHours(
+                                opening_hours=json_data['oh_opening'],
+                                display_order=json_data['oh_display_order'],
+                                localbusiness=lb)
+
                 opening_hours.save()
 
-            """FIXME: UnboundLocalError: local variable 'opening_hours' referenced before assignment"""
+            """ FIXME: UnboundLocalError: local variable 'opening_hours'
+            referenced before assignment """
             return JsonResponse({'opening_hours_pk': opening_hours.pk,
-                'display_order': opening_hours.display_order})
+                                'display_order': opening_hours.display_order})
 
         except ValueError:
             return JsonResponse({'error': 'bollogs'})
@@ -86,7 +92,8 @@ def remove_opening_hours(request, oh_pk):
         print >>sys.stderr, request.body
         try:
             json_data = json.loads(request.body)
-            opening_hours = OpeningHours.objects.get(pk=json_data['opening_hours_pk'])
+            opening_hours = OpeningHours.objects.get(
+                                pk=json_data['opening_hours_pk'])
             opening_hours.delete()
 
             return JsonResponse({'deleted': json_data['opening_hours_pk']})

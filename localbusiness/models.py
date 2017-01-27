@@ -34,7 +34,8 @@ class LocalBusiness(models.Model):
         return u'{0} - {1}'.format(self.name, dict(SITE_IDS)[self.site_id])
 
     def opening_hours(self):
-        return OpeningHours.objects.filter(localbusiness_id=self.id).order_by('display_order')
+        return OpeningHours.objects.filter(
+                localbusiness_id=self.id).order_by('display_order')
 
 
 class OpeningHours(models.Model):
