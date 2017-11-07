@@ -89,3 +89,9 @@ ENV/
 .ropeproject
 .DS_Store
 db.sqlite3
+
+# Django stuff
+manage.py
+shark_strudel/wsgi.py
+shark_strudel/urls.py
+shark_strudel/settings.py
