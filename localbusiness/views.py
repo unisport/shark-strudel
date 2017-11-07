@@ -100,3 +100,7 @@ def remove_opening_hours(request, oh_pk):
 
         except ValueError:
             return JsonResponse({'error': 'bollogs'})
+
+
+def add_legaldocument(request, ld_pk):
+    return JsonResponse({'hello': 'kitty'})

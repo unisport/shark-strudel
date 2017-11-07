@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+# These should be coming from settings
 SITE_IDS = (
     (1, 'unisport.dk'),
     (10, 'unisportstore.se'),
@@ -42,3 +43,12 @@ class OpeningHours(models.Model):
     localbusiness = models.ForeignKey(LocalBusiness, on_delete=models.CASCADE)
     opening_hours = models.CharField(max_length=255)
     display_order = models.IntegerField(default=0)
+
+
+class LegalDocument(models.Model):
+    localbusiness = models.ForeignKey(LocalBusiness, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    link_text = models.CharField(max_length=100, blank=True)
+    content = models.TextField()
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)

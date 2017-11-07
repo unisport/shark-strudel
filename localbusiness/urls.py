@@ -12,4 +12,8 @@ urlpatterns = [
         views.add_opening_hours, name='add_opening_hours'),
     url(r'^(?P<oh_pk>[0-9]+)/opening_hours/remove/$',
         views.remove_opening_hours, name='remove_opening_hours'),
+    url(r'^(?P<lb_pk>[0-9]+)/edit/legaldocument/new',
+        views.add_legaldocument, name='add_legaldocument'),
+    url(r'^(?P<lb_pk>[0-9]+)/edit/legaldocument/(?P<ld_pk>[0-9]+)/edit/$',
+        views.add_legaldocument, name='edit_legaldocument')
 ]
