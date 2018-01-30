@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="list-group">
+        {% for lb in localbusiness_list %}
+        <a href="{% url 'edit_view' lb.pk %}" class="list-group-item">
+                <h4 class="list-group-item-heading">{{ lb.site_name }}</h4>
+                <p class="list-group-item-text">
+                    {% for hours in lb.opening_hours %}
+                        {{ hours.opening_hours }}
+                    {% endfor %}
+                </p>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <a href="/localbusiness/new/" class="btn btn-primary">Add New</a>
+    </div>
+</div>
+{% endblock%}
